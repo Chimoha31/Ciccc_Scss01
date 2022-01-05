@@ -1,0 +1,186 @@
+// Single line comment
+/*
+  Multi-line comment
+*/
+
+/*-------------------------
+ variables
+------------------------*/
+$color-primary: #ffff00;
+
+body {
+  background-color: $color-primary;
+}
+
+// nesting
+.navbar {
+  background-color: orange;
+  padding: 1rem;
+
+  ul {
+    list-style: none;
+  }
+  li {
+    text-align: center;
+    margin: 1rem;
+  }
+}
+
+/*-------------------------
+ Mixins
+------------------------*/
+@mixin transform($property) {
+  transform: $property;
+  -webkit-transform: $property;
+  -ms-transform: $property;
+}
+
+/*-------------------------
+ function
+------------------------*/
+@function sdd-numbers($first-number, $second-number) {
+  @return $first-number + $second-number;
+}
+
+.box-1 {
+  padding: add-numbers(5px, 15px);
+}
+
+//output
+.box-1 {
+  padding: 20px;
+}
+
+/*-------------------------
+ Inheritance
+------------------------*/
+.button {
+  background-color: #0000ff;
+  border: none;
+  color: #fff;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.5rem;
+}
+
+.button-secondary {
+  // background-color: #0000ff;
+  // border: none;
+  // color: #fff;
+  // padding: 15px 32px;
+  // text-align: center;
+  // text-decoration: none;
+  // display: inline-block;
+  // font-size: 1.5rem;
+  @extend .button; //上記を継承できる
+  background-color: green;
+}
+
+/*-------------------------
+ ＆ operator(アンパサンドオペレーター)
+------------------------*/
+// <button class"btn btn-red">Click!</button>
+.btn {
+  display: inline-block;
+  padding: 15px 32px;
+  &--red {
+    background-color: red;
+  }
+  &:hover {
+    background-color: #fff;
+  }
+}
+/*-------------------------
+ contorol directives 
+------------------------*/
+// if and else
+@mixin heading($size) {
+  @if $size == large {
+    font-size: 4rem;
+  } @else if $size == medium {
+    font-size: 3rem;
+  } @else if $size == small {
+    font-size: 2rem;
+  } @else {
+    font-size: 1rem;
+  }
+}
+
+h1 {
+  @include heading(large);
+}
+h6 {
+  @include heading(small);
+}
+
+// loops
+@for $i from 1 through 5 {
+  .list-#{$i} {
+    width: 2px * $i;
+  }
+}
+// ↓結果
+// .list-1 {
+//   width: 2px;
+// }
+// .list-2 {
+//   width: 4px;
+// }
+// .list-3 {
+//   width: 6px;
+// }
+// .list-4 {
+//   width: 8px;
+// }
+// .list-5 {
+//   width: 10px;
+// }
+
+//while
+$i: 1;
+@while $i < 5 {
+  .list-#{$i} {
+    width: 2px * $i;
+  }
+  $i: $i + 1;
+}
+/*-------------------------
+interpolation
+------------------------*/
+// #{$variable_name} →syntax
+@mixin interpolation($editable, $val1, $val2, $prop1, $prop2) {
+  background-#{$editable}: $val1;
+  position: $val2;
+  #{$prop1}: 0px;
+  #{$prop2}: 0px;
+}
+
+.section1 {
+  @include interpolation("image", url("bg.png"), absolute, top, right);
+}
+.section2 {
+  @include interpolation("color", grey, absolute, left, top);
+}
+
+/*-------------------------
+placeholder
+------------------------*/
+%placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  @extend %placeholder;
+}
+p {
+  @extend %placeholder;
+}
+
+//結果
+// body, p {
+//   width: 100%;
+//   height: 100%;
+// }
